@@ -1,10 +1,11 @@
 package com.cepedi.curso.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.cepedi.curso.domain.Categoria;
+import com.cepedi.curso.services.CategoriaService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,17 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/categorias")
 
 public class CategoriaResource {
+  @Autowired
+  private CategoriaService service;
 
-  @RequestMapping(method = RequestMethod.GET)
-  public List<Categoria> listar() {
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  // PathVariable serve para passar o que vier na url pra dentro do obj
+  public ResponseEntity<?> listar(@PathVariable Integer id) {
 
-    Categoria cat = new Categoria(1, "Informática");
-    Categoria cat1 = new Categoria(2, "Escritório");
+    Categoria obj = service.buscar(id);
 
-    List<Categoria> lista = new ArrayList<>();
-    lista.add(cat);
-    lista.add(cat1);
-    return lista;
+    return ResponseEntity.ok().body(obj);
 
   }
 
