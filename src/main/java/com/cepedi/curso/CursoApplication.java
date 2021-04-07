@@ -3,8 +3,12 @@ package com.cepedi.curso;
 import java.util.Arrays;
 
 import com.cepedi.curso.domain.Categoria;
+import com.cepedi.curso.domain.Cidade;
+import com.cepedi.curso.domain.Estado;
 import com.cepedi.curso.domain.Produto;
 import com.cepedi.curso.repositories.CategoriaRepository;
+import com.cepedi.curso.repositories.CidadeRepository;
+import com.cepedi.curso.repositories.EstadoRepository;
 import com.cepedi.curso.repositories.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,12 @@ public class CursoApplication implements CommandLineRunner {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
+
+	@Autowired
+	private CidadeRepository cidadeRepository;
+
+	@Autowired
+	private EstadoRepository estadoRepository;
 
 	public static void main(String[] args) {
 
@@ -45,6 +55,18 @@ public class CursoApplication implements CommandLineRunner {
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
 
+		Estado e2 = new Estado(null, "Bahia");
+		Estado e1 = new Estado(null, "São Paulo");
+
+		Cidade c1 = new Cidade(null, "Salvador", e2);
+		Cidade c2 = new Cidade(null, "Sao Paulo", e1);
+		Cidade c3 = new Cidade(null, "Ilheus", e2);
+
+		e1.getCidades().addAll(Arrays.asList(c2));
+		e2.getCidades().addAll(Arrays.asList(c1, c3));
+
+		estadoRepository.saveAll(Arrays.asList(e1, e2));
+		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 	}
 
 }
