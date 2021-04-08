@@ -2,12 +2,12 @@ package com.cepedi.curso;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-
 import com.cepedi.curso.domain.Categoria;
 import com.cepedi.curso.domain.Cidade;
 import com.cepedi.curso.domain.Cliente;
 import com.cepedi.curso.domain.Endereco;
 import com.cepedi.curso.domain.Estado;
+import com.cepedi.curso.domain.ItemPedido;
 import com.cepedi.curso.domain.Pagamento;
 import com.cepedi.curso.domain.PagamentoComBoleto;
 import com.cepedi.curso.domain.PagamentoComCartao;
@@ -20,6 +20,7 @@ import com.cepedi.curso.repositories.CidadeRepository;
 import com.cepedi.curso.repositories.ClienteRepository;
 import com.cepedi.curso.repositories.EnderecoRepository;
 import com.cepedi.curso.repositories.EstadoRepository;
+import com.cepedi.curso.repositories.ItemPedidoRepository;
 import com.cepedi.curso.repositories.PagamentoRepository;
 import com.cepedi.curso.repositories.PedidoRepository;
 import com.cepedi.curso.repositories.ProdutoRepository;
@@ -54,6 +55,9 @@ public class CursoApplication implements CommandLineRunner {
 
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 
@@ -120,6 +124,19 @@ public class CursoApplication implements CommandLineRunner {
 
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, p1.getPreco());
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 1, p3.getPreco());
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 0.00, 1, p2.getPreco());
+
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+
 	}
 
 }
