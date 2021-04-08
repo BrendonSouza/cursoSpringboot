@@ -4,10 +4,15 @@ import java.util.Arrays;
 
 import com.cepedi.curso.domain.Categoria;
 import com.cepedi.curso.domain.Cidade;
+import com.cepedi.curso.domain.Cliente;
+import com.cepedi.curso.domain.Endereco;
 import com.cepedi.curso.domain.Estado;
 import com.cepedi.curso.domain.Produto;
+import com.cepedi.curso.domain.enums.TipoCliente;
 import com.cepedi.curso.repositories.CategoriaRepository;
 import com.cepedi.curso.repositories.CidadeRepository;
+import com.cepedi.curso.repositories.ClienteRepository;
+import com.cepedi.curso.repositories.EnderecoRepository;
 import com.cepedi.curso.repositories.EstadoRepository;
 import com.cepedi.curso.repositories.ProdutoRepository;
 
@@ -29,6 +34,12 @@ public class CursoApplication implements CommandLineRunner {
 
 	@Autowired
 	private EstadoRepository estadoRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
+
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 
@@ -67,6 +78,18 @@ public class CursoApplication implements CommandLineRunner {
 
 		estadoRepository.saveAll(Arrays.asList(e1, e2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "00223556998", TipoCliente.PESSOAFISICA);
+
+		cli1.getTelefones().addAll(Arrays.asList("40028922", "996699969"));
+
+		Endereco end1 = new Endereco(null, "logradouro", "numero", "complemento", "bairro", "cep", cli1, c1);
+		Endereco end2 = new Endereco(null, "Rua das dores", "75", "casa sem chão", "bairro das graças", "4569985", cli1,
+				c2);
+		cli1.getEnderecos().addAll(Arrays.asList(end1, end2));
+
+		enderecoRepository.saveAll(Arrays.asList(end1, end2));
+		clienteRepository.saveAll(Arrays.asList(cli1));
 	}
 
 }
